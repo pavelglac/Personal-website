@@ -1,0 +1,24 @@
+@import 'core/normalize';
+@import 'core/variables';
+@import 'core/aos';
+@import 'core/fonts';
+
+
+@import 'layout/body';
+@import 'layout/layout';
+@import 'layout/background';
+
+@import 'common/text.scss';
+@import 'common/common.scss';
+
+@import 'components/particles.scss';
+@import 'components/nav.scss';
+@import 'components/arrow.scss';
+@import 'components/typewriter.scss';
+@import 'components/section.scss';
+@import 'components/contact-form.scss';
+
+@import 'pages/welcome.scss';
+@import 'pages/about.scss';
+@import 'pages/products.scss';
+@import 'pages/contact.scss';

@@ -1,0 +1,12 @@
+.contact{
+
+	position: relative;
+	background-color: $background-color-main;
+	z-index:10;
+
+	@media (min-width: $mobile-breakpoint) {
+
+	    padding: 1em 0em;
+  	}
+
+}
