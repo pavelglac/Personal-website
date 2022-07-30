@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Automatická úprava typografie | Pavel Glac</title>
+    <meta
+      name="description"
+      content="Vkládání medělitelných mezer, oprava špatných uvozovek. Vhodné pro všechny vývojáře, kteří chtějí vkládat typograficky správný text do svých stránek či e&#8209;mailů."
+    />
+    <meta
+      name="keywords"
+      content="Tvorba stránek, webdesign, webdesigner, programování, programátor, javascript, js, stránky na míru, HTML, Pavel Glac, CSS, wordpress, vývoj, grafika, design, hradec králové"
+    />
+    <meta name="author" content="Pavel Glac" />
+    <meta property="og:title" content="Automatická úprava typografie" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://www.pavelglac.com" />
+    <meta
+      property="og:image"
+      content="https://www.pavelglac.com/img/profile-xs.jpg"
+    />
+    <meta name="theme-color" content="#1b1f26" />
+    <link rel="manifest" href="/manifest.json" />
+    <link href="https://www.pavelglac.com/favicon.ico" rel="icon" type="image/x-icon" />
+    <style>
+      html {
+        line-height: 1.15;
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+      }
+      h1 {
+        font-size: 2em;
+        margin: 0.67em 0;
+      }
+      a {
+        background-color: transparent;
+      }
+      img {
+        border-style: none;
+      }
+      ::-webkit-file-upload-button {
+        -webkit-appearance: button;
+        font: inherit;
+      }
+      body {
+        background-color: #1f1f1f;
+        font-family: Poppins, sans-serif;
+      }
+      p {
+        font-family: Tinos, sans-serif;
+      }
+      .container {
+        position: relative;
+        margin-right: auto;
+        margin-left: auto;
+      }
+      .background {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-image: linear-gradient(
+          60deg,
+          #f79533,
+          #f37055,
+          #ef4e7b,
+          #a166ab,
+          #5073b8,
+          #1098ad,
+          #07b39b,
+          #6fba82
+        );
+        background-attachment: scroll;
+        background-size: cover;
+        background-repeat: repeat;
+        box-sizing: border-box;
+      }
+      .bg-texture {
+        background-color: #1f1f1f;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='a' gradientUnits='userSpaceOnUse' x1='100' y1='33' x2='100' y2='-3'%3E%3Cstop offset='0' stop-color='%23000' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='1'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' gradientUnits='userSpaceOnUse' x1='100' y1='135' x2='100' y2='97'%3E%3Cstop offset='0' stop-color='%23000' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill='%231a1a1a' fill-opacity='0.6'%3E%3Crect x='100' width='100' height='100'/%3E%3Crect y='100' width='100' height='100'/%3E%3C/g%3E%3Cg fill-opacity='0.5'%3E%3Cpolygon fill='url(../css/%23a)' points='100 30 0 0 200 0'/%3E%3Cpolygon fill='url(../css/%23b)' points='100 100 0 130 0 100 200 100 200 130'/%3E%3C/g%3E%3C/svg%3E");
+      }
+      .text-justify {
+        text-align: justify;
+      }
+      .text-center {
+        text-align: center;
+      }
+      .text-uppercase {
+        text-transform: uppercase;
+      }
+      a {
+        text-decoration: none;
+      }
+      .center {
+        margin-right: auto;
+        margin-left: auto;
+      }
+      .color-white {
+        color: #fff;
+      }
+      .color-gradient {
+        background: linear-gradient(
+          60deg,
+          #f79533,
+          #f37055,
+          #ef4e7b,
+          #a166ab,
+          #5073b8,
+          #1098ad,
+          #07b39b,
+          #6fba82
+        );
+        background-size: 200% 200%;
+        animation-duration: 7s;
+        animation: Gradient 7s ease infinite;
+        height: 100%;
+        width: 5em;
+      }
+      .brain {
+        clip-path: url(../css/#brain);
+        width: 5em;
+      }
+      .tachometr {
+        clip-path: url(../css/#tachometr);
+        width: 5em;
+      }
+      .code {
+        clip-path: url(../css/#code);
+        width: 5em;
+      }
+      .laptop-code {
+        clip-path: url(../css/#laptop-code);
+        width: 5em;
+      }
+      .wordpress {
+        clip-path: url(../css/#wordpress);
+        width: 5em;
+      }
+      @-webkit-keyframes Gradient {
+        0% {
+          background-position: 0 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0 50%;
+        }
+      }
+      #particles-js {
+        height: 100%;
+        width: 100%;
+      }
+      nav {
+        margin: 2em;
+        padding: 0;
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      nav ul {
+        display: flex;
+        flex-direction: column;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        display: none;
+      }
+      nav ul.opening {
+        display: block;
+        height: 30px;
+      }
+      nav li a {
+        text-align: center;
+      }
+      nav li:last-child {
+        border-bottom: none;
+      }
+      nav li a {
+        color: #fff;
+        display: block;
+        padding: 1.5em 4em 1.5em 3em;
+        text-transform: uppercase;
+      }
+      .logo {
+        width: 3em;
+      }
+      .space {
+        width: 3em;
+      }
+      .menu-toggle {
+        cursor: pointer;
+        width: 2em;
+        float: right;
+        -webkit-transform: rotate(0);
+        -moz-transform: rotate(0);
+        -o-transform: rotate(0);
+        transform: rotate(0);
+        -webkit-transition: 0.5s ease-in-out;
+        -moz-transition: 0.5s ease-in-out;
+        -o-transition: 0.5s ease-in-out;
+        transition: 0.5s ease-in-out;
+      }
+      #menu-toggle span {
+        display: block;
+        position: absolute;
+        height: 0.2em;
+        width: 100%;
+        background: #fff;
+        border-radius: 0.2em;
+        opacity: 1;
+        left: 0;
+        -webkit-transform: rotate(0);
+        -moz-transform: rotate(0);
+        -o-transform: rotate(0);
+        transform: rotate(0);
+        -webkit-transition: 0.25s ease-in-out;
+        -moz-transition: 0.25s ease-in-out;
+        -o-transition: 0.25s ease-in-out;
+        transition: 0.25s ease-in-out;
+      }
+      #menu-toggle span:nth-child(1) {
+        top: 0;
+      }
+      #menu-toggle span:nth-child(2) {
+        top: 0.35em;
+      }
+      #menu-toggle span:nth-child(3) {
+        top: 0.75em;
+      }
+      #menu-toggle.hamopen span:nth-child(1) {
+        top: 0.35em;
+        -webkit-transform: rotate(135deg);
+        -moz-transform: rotate(135deg);
+        -o-transform: rotate(135deg);
+        transform: rotate(135deg);
+      }
+      #menu-toggle.hamopen span:nth-child(2) {
+        opacity: 0;
+        left: -2em;
+      }
+      #menu-toggle.hamopen span:nth-child(3) {
+        top: 0.35em;
+        -webkit-transform: rotate(-135deg);
+        -moz-transform: rotate(-135deg);
+        -o-transform: rotate(-135deg);
+        transform: rotate(-135deg);
+      }
+      .arrow {
+        text-align: center;
+        margin-bottom: 4em;
+        cursor: pointer;
+      }
+      .bounce {
+        -moz-animation: bounce 1.7s infinite;
+        -webkit-animation: bounce 1.7s infinite;
+        animation: bounce 1.7s infinite;
+      }
+      @keyframes bounce {
+        0%,
+        100%,
+        20%,
+        50%,
+        80% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-30px);
+        }
+        60% {
+          transform: translateY(-15px);
+        }
+      }
+      .typewrite {
+        display: flex;
+        justify-content: center;
+        color: #fff;
+        text-decoration: none;
+      }
+      .typewrite .wrap {
+        font-weight: 700;
+        font-size: calc(2em+1vw);
+      }
+      .typewriter {
+        min-height: 7em;
+      }
+      .invisible {
+        display: none;
+      }
+      .about-section {
+        color: #fff;
+        max-width: 90%;
+        display: flex;
+        flex-direction: column;
+        color: #555;
+      }
+      .about-section h2 {
+        color: #333;
+        text-align: center;
+      }
+      .profile-text {
+        max-width: 45em;
+        background-color: #fff;
+        padding: 1em;
+        margin-top: 4em;
+        border-radius: 2em;
+        box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11),
+          0 5px 15px 0 rgba(0, 0, 0, 0.08);
+      }
+      .profile-text p {
+        color: #555;
+      }
+      .profile-img {
+        position: relative;
+      }
+      .profile-img img {
+        box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11),
+          0 5px 15px 0 rgba(0, 0, 0, 0.08);
+        display: block;
+        border-radius: 50%;
+      }
+      input {
+        outline: 0;
+        border: none;
+      }
+      textarea {
+        outline: 0;
+        border: none;
+      }
+      input:focus,
+      textarea:focus {
+        border-color: transparent;
+      }
+      input:focus::-webkit-input-placeholder {
+        color: transparent;
+      }
+      input:focus:-moz-placeholder {
+        color: transparent;
+      }
+      input:focus::-moz-placeholder {
+        color: transparent;
+      }
+      input:focus:-ms-input-placeholder {
+        color: transparent;
+      }
+      textarea:focus::-webkit-input-placeholder {
+        color: transparent;
+      }
+      textarea:focus:-moz-placeholder {
+        color: transparent;
+      }
+      textarea:focus::-moz-placeholder {
+        color: transparent;
+      }
+      textarea:focus:-ms-input-placeholder {
+        color: transparent;
+      }
+      input::-webkit-input-placeholder {
+        color: #999;
+      }
+      input:-moz-placeholder {
+        color: #999;
+      }
+      input::-moz-placeholder {
+        color: #999;
+      }
+      input:-ms-input-placeholder {
+        color: #999;
+      }
+      textarea::-webkit-input-placeholder {
+        color: #999;
+      }
+      textarea:-moz-placeholder {
+        color: #999;
+      }
+      textarea::-moz-placeholder {
+        color: #999;
+      }
+      textarea:-ms-input-placeholder {
+        color: #999;
+      }
+      button {
+        outline: 0;
+        border: none;
+        background: 0 0;
+      }
+      .wrap-contact2 {
+        background: #fff;
+        max-width: 60em;
+        min-width: 50vw;
+        overflow: hidden;
+        padding: 5em 3em;
+        width: calc(100% - 6em);
+      }
+      .dis {
+        animation: dis 2s forwards;
+        animation-delay: 0.4s;
+      }
+      @keyframes dis {
+        85% {
+          background-color: rgba(0, 0, 0, 0);
+        }
+        100% {
+          background-color: rgba(0, 0, 0, 0);
+        }
+      }
+      #emailsent {
+        opacity: 0;
+        font-size: 2em;
+        font-weight: 700;
+        text-align: center;
+        display: none;
+        color: #fff;
+      }
+      .show {
+        animation: show 2s forwards;
+        animation-delay: 0.4s;
+      }
+      @keyframes show {
+        0% {
+          color: #333;
+        }
+        100% {
+          opacity: 1;
+          color: #fff;
+        }
+      }
+      .fade {
+        animation: fade 1.7s forwards;
+      }
+      @keyframes fade {
+        0% {
+          transform: translatex(0);
+        }
+        100% {
+          transform: translatex(30em);
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
+      .contact h2 {
+        display: block;
+        font-size: 2.5em;
+        color: #333;
+        line-height: 1.2;
+        text-align: center;
+      }
+      .input {
+        width: 100%;
+        position: relative;
+        border-bottom: 2px solid #adadad;
+        margin-bottom: 2em;
+      }
+      .input-form {
+        display: block;
+        width: 100%;
+        color: #555;
+        line-height: 1.2;
+      }
+      .focus-input-form {
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+      }
+      .focus-input-form::before {
+        content: "";
+        display: block;
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #db1563;
+        background: linear-gradient(
+          60deg,
+          #f79533,
+          #f37055,
+          #ef4e7b,
+          #a166ab,
+          #5073b8,
+          #1098ad,
+          #07b39b,
+          #6fba82
+        );
+      }
+      .products-section {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .products-section h2 {
+        font-size: 3.5em;
+        padding: 0.4em 0 0.1em 0;
+      }
+      .products-list {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        color: #555;
+      }
+      .products-list h3 {
+        color: #333;
+        font-size: 1.75em;
+      }
+      .products-list article {
+        background: #fff;
+        max-width: 22em;
+        padding: 1em 2.5em;
+        margin: 1.75em 1em;
+        border-radius: 2em;
+      }
+      .products-list article p {
+        hyphens: manual;
+      }
+      .product-icon {
+        width: 100%;
+        height: 5em;
+        display: flex;
+        justify-content: center;
+        padding: 1em 0 1.5em 0;
+      }
+      .welcome {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        z-index: 10;
+      }
+      header {
+        max-width: 100vw;
+      }
+      .about {
+        position: relative;
+        min-height: 150vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        z-index: 10;
+        padding: 6em 0;
+      }
+      @media (min-width: 780px) {
+        nav {
+          margin: 1em 2em;
+        }
+        nav ul {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-end;
+        }
+        nav li {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-end;
+        }
+        nav li a {
+          padding: 1.5em 1.3em 1.5em 1.3em;
+          margin: 0;
+          border: none;
+        }
+        .space {
+          display: none;
+        }
+        .arrow {
+          margin-bottom: 2em;
+        }
+        .about-section h2 {
+          text-align: left;
+        }
+        .about-section {
+          background: #fff;
+          border-radius: 2em;
+          box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11),
+            0 5px 15px 0 rgba(0, 0, 0, 0.08);
+          max-width: 100%;
+          padding: 3em;
+          flex-direction: row;
+        }
+        .profile-text {
+          margin-left: 2em;
+          margin-top: auto;
+          margin-bottom: auto;
+          background-color: rgba(0, 0, 0, 0);
+          border: 0;
+        }
+        .spinner {
+          position: absolute;
+          box-sizing: border-box;
+          top: -1px;
+          left: -1px;
+          border-top: 16px solid #3a556a;
+          border-radius: 50%;
+          width: 100.5%;
+          height: 100.5%;
+          animation: spin 7s linear infinite;
+        }
+        @keyframes spin {
+          0% {
+            transform: rotate(0);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+        .products-section {
+          max-width: 80vw;
+        }
+        header {
+          max-width: 80em;
+          min-width: 70vw;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .about {
+          padding: 9em 0;
+        }
+      }
+    </style>
+  </head>
+  <body style="color: white;">
+    <div class="background">
+      <div id="particles-js" style="position: absolute;top: 0px;left: 0px;">
+        <canvas
+          class="particles-js-canvas-el"
+          width="1125"
+          height="2436"
+          style="width: 100%; height: 100%;"
+        ></canvas>
+      </div>
+    </div>
+    <div class="welcome container" style="display: block;" id="welcome">
+        <script>function isEmpty(field){
+            const x = document.getElementById("output").value;
+            document.getElementById("output").value = typo.improveTypography(document.getElementById("input").value);
+
+            if(field.value==""){field.classList.remove("has-val");} else{field.classList.add("has-val");}
+            }
+        </script>
+
+        <h1 style="text-align: center;">Automatická upráva české&#8239;typografie</h1>
+        <div style="display: flex; justify-content: center;">
+            <style>
+                .input{
+                    padding: 1em;
+                    border-radius: 1em;
+                    background: white;
+                    max-width: 50em;
+                    min-height: 40vh;
+                }
+                textarea{
+                    height: 75vh;
+                }
+            </style>
+            <div class="input validate-input" style="margin-right: 2em;">
+                <h2 style="color: crimson; border-bottom: 1px solid lightcoral; padding-bottom: .5em;">Neopravený text</h2>
+                <textarea aria-label="Text který má být opraven" class="input-form" placeholder="Zadejte text na opravu" onchange="isEmpty(this)" onkeyup="isEmpty(this)" id="input" ></textarea></div>
+            <div class="input validate-input">
+                <h2 style="color: green;">Opravený text</h2>
+                <textarea aria-label="Zde je opravený text" class="input-form" placeholder="Zde bude opravený text" onclick="this.select()" id="output" readonly></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const typo = {
+
+                inLineElements : ["B", "BIG", "I", "SMALL", "TT", "ABBR", "ACRONYM", "CITE", "DFN", "EM", "KDB", "STRONG", "SAMP", "VAR", "A", "BDO", "MAP", "OBJECT", "Q", "SPAN", "SUB", "SUP", "BUTTON", "INPUT", "LABEL", "SELECT", "TEXTAREA"],
+                ignoredElemenents : ["SCRIPT", "NOSCRIPT", "STYLE", "TITLE", "IFRAME", "HEAD", "META", "HTML", "BR", "IMG", ""],
+                uselessChar : "\uE000",
+                uselessCharsCollection : ["\u001A", "\uE001", "\uE990"],
+
+                options : {
+                
+                quote: true,
+                units: true,
+                number: true,
+                space: true,
+                date: true,
+                ellipsis: true,
+                year: true
+
+                },
+
+                Rules : {
+
+                    // rules for czech quotes
+
+                    quote: [
+
+                    [/(“|")(\w)/g, "„$2"],
+
+                    [/(“|")\uE000(\w)/g, "„\uE000$2"],
+
+                    [/(”|")( |,|\n*|$)/g, "“$2"],
+
+                    [/(”|")\uE000( |,|\n*|$)/g, "“\uE000$2"],
+
+                    [/(!|\?|\.)(”|")/g, "$1“"],
+
+                    [/(!|\?|\.)\uE000(”|")/g, "$1\uE000“"],
+
+                    [/(\w)(')(\w)/g, "$1’$3"]
+
+                    ],
+
+
+                    // rules for units
+
+                    // there must be a space between numbers and the unit
+
+                    units: [
+
+                    [/(\d+)(| )(|m)s/g, "$1"+"&nbsp;"+"$3s"],
+
+                    [/(\d+)(| )\uE000(| )(|m)s/g, "$1"+"&nbsp;\uE000"+"$4s"],
+
+                    [/(\d+)(| )(min|h|d)/g, "$1"+"&nbsp;"+"$3"],
+
+                    [/(\d+)(| )\uE000(| )(min|h|d)/g, "$1"+"&nbsp;\uE000"+"$4"],
+
+                    [/(\d+)(| )(|n|m|c|d|k)m/g, "$1"+"&nbsp;"+"$3m"],
+
+                    [/(\d+)(| )\uE000(| )(|n|m|c|d|k)m/g, "$1"+"&nbsp;\uE000"+"$3m"],
+
+                    [/(\d+)(| )(|m|h|d|c|b)l/g, "$1"+"&nbsp;"+"$3l"],
+
+                    [/(\d+)(| )\uE000(| )(|m|h|d|c|b)l/g, "$1"+"&nbsp;\uE000"+"$3l"],
+
+                    [/(\d+)(| )(ccm|gal)/g, "$1"+"&nbsp;"+"$3"],
+
+                    [/(\d+)(| )\uE000(| )(ccm|gal)/g, "$1"+"&nbsp;\uE000"+"$3"],
+
+                    [/(\d+)(| )(|m|c|d|k)m(\d)/g, "$1"+"&nbsp;"+"$3m$4"],
+
+                    [/(\d+)(| )\uE000(| )(|m|c|d|k)m(\d)/g, "$1"+"&nbsp;\uE000"+"$3m$4"],
+
+                    [/(\d+)(| )(ccm|gal)/g, "$1"+"&nbsp;"+"$3"],
+
+                    [/(\d+)(| )\uE000(| )(ccm|gal)/g, "$1"+"&nbsp;\uE000"+"$4"],
+
+                    [/(\d+)(| )(ha|a)/g, "$1"+"&nbsp;"+"$3"],
+
+                    [/(\d+)(| )\uE000(| )(ha|a)/g, "$1"+"&nbsp;\uE000"+"$4"],
+
+                    [/(\d+)(| )(|k|M)J/g, "$1"+"&nbsp;"+"$3J"],
+
+                    [/(\d+)(| )\uE000(| )(|k|M)J/g, "$1"+"&nbsp;\uE000"+"$4J"],
+
+                    [/(\d+)(| )(|k)cal/g, "$1"+"&nbsp;"+"$3cal"],
+
+                    [/(\d+)(| )\uE000(| )(|k)cal/g, "$1"+"&nbsp;"+"$4cal"],
+
+                    [/(\d+)(| )(|kWh|M)Wh/g, "$1"+"&nbsp;"+"$3Wh"],
+
+                    [/(\d+)(| )\uE000(| )(|kWh|M)Wh/g, "$1"+"&nbsp;\uE000"+"$4Wh"],
+
+                    [/(\d+)(| )(|k)m\/(s|min|h)/g, "$1"+"&nbsp;"+"$3m/$4"],
+
+                    [/(\d+)(| )\uE000(| )(|k)m\/(s|min|h)/g, "$1"+"&nbsp;\uE000"+"$4m/$5"],
+
+                    [/(\d+)(| )(K|°C|°F)/g, "$1"+"&nbsp;"+"$3"],
+
+                    [/(\d+)(| )\uE000(| )(K|°C|°F)/g, "$1"+"&nbsp;\uE000"+"$4"],
+
+                    [/(\d+)(| )(|h|k|M)Pa/g, "$1"+"&nbsp;"+"$3Pa"],
+
+                    [/(\d+)(| )\uE000(| )(|h|k|M)Pa/g, "$1"+"&nbsp;\uE000"+"$4Pa"],
+
+                    [/(\d+)(| )(bar|atm)/g, "$1"+"&nbsp;"+"$3"],
+
+                    [/(\d+)(| )\uE000(| )(bar|atm)/g, "$1"+"&nbsp;\uE000"+"$4"],
+
+                    [/(\d+)(| )(|k)W/g, "$1"+"&nbsp;"+"$3"],
+
+                    [/(\d+)(| )\uE000(| )(|k)W/g, "$1"+"&nbsp;\uE000"+"$4"],
+
+                    [/(\d+)(| )(%)/g, "$1"+"&nbsp;"+"$3"],
+
+                    [/(\d+)(| )\uE000(| )(%)/g, "$1"+"&nbsp;\uE000"+"$3"],
+
+                    ],
+
+                    // rule for number formatting
+
+                    number: [
+
+                    [/(\d)( |&nbsp;)(\d)/g, "$1$3"],
+
+                    [/(\d)\uE000( |&nbsp;)(\d)/g, "$1\uE000$3"],
+
+                    [/(\d)( |&nbsp;)\uE000(\d)/g, "$1\uE000$3"],
+
+                    //all position how number can be decomposed into different elements
+                    [/(\d|\uE000)(?=(\d{3}|\d{3}\uE000|\d\uE000\d{2}|\d{2}\uE000\d|\uE000\d{3}|\d\uE000\d\uE000\d|\uE000\d\uE000r\d\uE000\d|\d\uE000\d\uE000\d\uE000)+(?!(\d|\uE000\d|\d\uE000)))/g, "$1"+"&nbsp;"]
+
+
+                    ],
+
+                    // rules for hard spaces
+
+                    space: [
+
+                    [/  /g, " "],
+
+                    [/ (a|i|o|u|s|z|k|v|A|I|O|U|S|Z|K|V) /g, " $1&nbsp;"],
+
+                    [/ (a|i|o|u|s|z|k|v|A|I|O|U|S|Z|K|V)\uE000 /g, " $1&nbsp;\uE000"],
+
+                    [/ \uE000(a|i|o|u|s|z|k|v|A|I|O|U|S|Z|K|V)\uE000 /g, " \uE000$1&nbsp;\uE000"],
+
+                    [/ \uE000(a|i|o|u|s|z|k|v|A|I|O|U|S|Z|K|V) /g, " \uE000$1&nbsp;"],
+
+                    [/([§|#])( )(\d)/g, "$1"+"&nbsp;"+"$3"],
+
+                    [/([§|#])(| )\uE000(| )(\d)/g, "$1"+"&nbsp;\uE000"+"$4"],
+
+                    [/(tj|tzv|tzn)\. /g, "$1.&nbsp;"]
+
+                    ],
+
+                    // rules for dates
+
+                    date: [
+
+                    [/(\d{1,2}\.)(| )(\d{1,2}\.)(| )(\d{4})/g, "$1"+"&nbsp;"+"$3"+" "+"$5"],
+                    [/(\d{1,2}\.)(| )(\d{1,2}\.)(| )(\d)	&#8239;(\d{3})/g, "$1"+"&nbsp;"+"$3"+" "+"$5"+"$6"],
+                    [/(\d{1,2}\.)(| )(\d{1,2}\.)(| )(\d)	&#8239;(\d{2}\uE000\d)/g, "$1"+"&nbsp;"+"$3"+" "+"$5$6"],
+                    [/(\d{1,2}\.)(| )(\d{1,2}\.)(| )(\d)	&#8239;\d\uE000(\d{2})/g, "$1"+"&nbsp;"+"$3"+" "+"$5$6"],
+                    [/(\d{1,2}\.)(| )(\d{1,2}\.)(| )(\d)	&#8239;(\uE000\d{3})/g, "$1"+"&nbsp;"+"$3"+" "+"$5$6"]
+
+                    ],
+
+                    // rule for ellipsis instead of 3 dots
+
+                    ellipsis: [
+
+                    [/\.{3}/g, "…"],
+                    [/\.{2}\uE000\./g, "…\uE000"],
+                    [/\.\uE000\.\./g, "\uE000…"],
+                    [/\.\uE000\.\uE000\./g, "\uE000…\uE000"]
+
+                    ],
+
+                    year: [
+
+                    [/( | \uE000|–|–\uE000|-|-\uE000|\u002F|\u002F\uE000)(1)	&#8239;(\d{3})(?!	&#8239;)/g, "$1$2$3"],
+                    [/( | \uE000|–|–\uE000|-|-\uE000|\u002F|\u002F\uE000)(2)	&#8239;(100|0\d\d)(?!	&#8239;)/g, "$1$2$3"]
+
+                    ],
+
+                    pomlcka: [
+
+                    [/(-shop)/g, "&#8209;shop"],
+                    [/(-mail)/g, "&#8209;mail"]
+
+                    ],
+                },
+
+                /**
+                 * init function of whole script
+                 * 
+                 * @param  {object} settings [set parameters of the object options]
+                 * @param  {HTML collection} node [collection for iteration]
+                 * @return 
+                 */
+                runAutoCorrector : function runAutoCorrector(settings, node)
+                {
+
+                while (typo.checkUselessChar()) {typo.setUselessChar();}
+
+                options = Object.assign(typo.options, settings);
+                const elementsWithClass = document.getElementsByClassName("typography-autocorrector");
+
+                if (node !== undefined)
+                {
+
+                    typo.elementsDescendants(node);
+                    return;
+
+                }
+                if (elementsWithClass.length > 0)
+                {
+
+                    typo.elementsDescendants(elementsWithClass);
+                    return;
+
+                }
+
+                /**
+                 *   If there is none node in the parameter
+                 *                   or
+                 *   no class with the name typography-autocorrector
+                 */
+                const all = document.getElementsByTagName("*");
+                typo.elementIteration(all);
+
+
+                },
+
+                elementsDescendants : function elementsDescendants(nodes)
+                {
+                    
+                    /**
+                     * get all nodes of node with class typography-autocorrector
+                     * 
+                     * @type {Number} max [number of elements with class]
+                     */
+                    for (let node of nodes)
+                    {
+
+                    const descendants = node.getElementsByTagName("*");
+                    typo.elementIteration(node);
+                    if (descendants > 0) {typo.elementIteration(descendants);}
+
+                    }
+
+
+                },
+
+                setUselessChar : function setUselessChar()
+                {
+
+                    for (let rule in typo.Rules)
+                    {
+                    rule.replace(typo.uselessChar, typo.uselessCharsCollection[0])
+                    }
+                    typo.uselessChar = typo.uselessCharsCollection[0];
+                    typo.uselessCharsCollection.shift();
+                    return;    
+
+                },
+
+                checkUselessChar : function checkUselessChar()
+                {
+
+                if (typo.uselessCharsCollection.length === 0){console.error("Změňte proměnou uselessChar ve scriptu na znak, který se nevyskystuje na stránce.");return false;}
+                const str = document.getElementsByTagName("BODY")[0].textContent;
+                const patt = new RegExp(typo.uselessChar);
+                const result = patt.test(str);
+                return result;
+
+
+                },
+
+                elementIteration : function elementIteration(all)
+                {
+                if (all.length > 0)
+                {
+                    for (let element of all)
+                    {
+                    if (typo.shouldSkip(element)){continue;}
+                    typo.textJoining(element);
+                    }
+                }else{
+                    if (typo.shouldSkip(all)){return;}
+                    typo.textJoining(all);
+                }
+
+                },
+
+                shouldSkip : function shouldSkip(node)
+                {
+
+                if (typo.ignoredElemenents.includes(node.tagName) || node.textContent === "" || typo.inLineElements.includes(node.tagName)) {return true;}
+
+                return false;
+
+                },
+
+                getSiblings : function getSiblings(element)
+                {
+
+                let sibs = [];
+                sibs.push(element);
+                if (element.nextSibling === null) {return sibs;}
+                while (element = element.nextSibling)
+                {
+
+                    sibs.push(element);
+
+                } 
+                return sibs;
+
+                },
+
+                textJoining : function textJoining(node)
+                {
+
+                const nodes = typo.getText(node);
+                let text = "";
+                for (let node of nodes) {
+
+                    text = text.concat(node.textContent);
+                    text = text.concat(typo.uselessChar);
+
+                }
+
+                text = typo.improveTypography(text);
+                const textField = text.split(typo.uselessChar, nodes.length);
+                for (let i = 0; i < textField.length; i++)
+                {
+
+                    nodes[i].textContent = textField[i];
+
+                }
+
+                return;
+
+                },
+
+
+                getText : function getText(node)
+                {
+
+                    let sibsWithText = [];
+                    if (node.textContent === "") {return sibsWithText}
+                    const sibs = typo.getSiblings(node.childNodes[0]);
+                    for (let sib of sibs)
+                    {
+
+                    if (sib.nodeValue !== null && sib.nodeType === 3){sibsWithText.push(sib);}
+                    if (sib.hasChildNodes && sib.textContent !== "" && typo.inLineElements.includes(sib.tagName) && sib.nodeType === 1)
+                    { 
+
+                        /*
+                        iteration of the DOM in depth
+                        */
+                        const sibsOfChild = typo.getText(sib);
+                        for (let sibWithText of sibsOfChild)
+                        {
+                        sibsWithText.push(sibWithText);
+                        }
+
+
+                    }
+                
+                    }
+
+                    return sibsWithText;
+                
+                },
+
+                improveTypography : function improveTypography(string)
+                {
+
+                if (typo.options.quote)
+                {
+                    for(let rule of typo.Rules.quote)
+                    {
+                        string = string.replace(rule[0], rule[1]);
+                    } 
+                }
+
+                if (typo.options.units)
+                {
+                    for(let rule of typo.Rules.units)
+                    {
+                    string = string.replace(rule[0], rule[1]);
+                    } 
+                }
+
+                if (typo.options.number)
+                {
+                    for(let rule of typo.Rules.number)
+                    {
+                    string = string.replace(rule[0], rule[1]);
+                    } 
+                } 
+
+                if (typo.options.space)
+                {
+                    for(let rule of typo.Rules.space)
+                    {
+                    string = string.replace(rule[0], rule[1]);
+                    } 
+                }
+
+                if (typo.options.date)
+                {
+                    for(let rule of typo.Rules.date)
+                    {
+                    string = string.replace(rule[0], rule[1]);
+                    } 
+                }
+
+                if (typo.options.ellipsis)
+                {
+                    for(let rule of typo.Rules.ellipsis)
+                    {
+                    string = string.replace(rule[0], rule[1]);
+                    } 
+                } 
+
+                if (typo.options.year)
+                {
+                    for(let rule of typo.Rules.year)
+                    {
+                    string = string.replace(rule[0], rule[1]);
+                    } 
+                }
+
+                for(let rule of typo.Rules.pomlcka)
+                {
+                  string = string.replace(rule[0], rule[1]);
+                }  
+
+                return string;
+
+                }
+
+                }
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="https://www.pavelglac.com/css/style.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+      particlesJS.load("particles-js", "https://www.pavelglac.com/particlesjs-config.json");
+    </script>
+  </body>
+</html>
